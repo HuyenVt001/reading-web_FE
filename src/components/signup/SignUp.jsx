@@ -5,34 +5,33 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { useAuthApi } from '../../services/authServices';
+import useAuthApi from '../../services/authServices';
 
-const API_BASE_URL = 'https://be-aiot-lab-landing-page.onrender.com';
+const API_BASE_URL = "http://localhost:8888";
 
 function Signup() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
+        username: '',
         email: '',
         password: '',
     });
 
     const { signUp } = useAuthApi();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
         try {
             await signUp(formData);
             toast.success('Đăng ký thành công! 🎉', { autoClose: 500 });
-            navigate('/login');
-        } catch (error: any) {
+            navigate('/api/auth/signin');
+        } catch (error) {
             console.error('Error signing up:', error);
             toast.error(error.response?.data?.message || 'Đăng ký thất bại! 😢', { autoClose: 3000 });
         } finally {
@@ -49,8 +48,8 @@ function Signup() {
                         <label className="block text-sm font-medium">Tài khoản</label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
+                            name="username"
+                            value={formData.username}
                             onChange={handleChange}
                             required
                             disabled={isLoading}
@@ -98,7 +97,7 @@ function Signup() {
                 </form>
                 <p className="text-sm text-center mt-4">
                     Đã có tài khoản?{' '}
-                    <a href="/login" className="text-blue-500">
+                    <a href="/api/auth/signin" className="text-blue-500">
                         Đăng nhập
                     </a>
                 </p>

@@ -1,15 +1,32 @@
-import React from 'react';
-import { useState } from 'react';
-import { FaGoogle } from 'react-icons/fa';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useAuthApi from "../../services/authServices"; 
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const navigate = useNavigate(); 
+    const { login } = useAuthApi(); 
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const [usernameOrEmail, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Tên tài khoản:', username);
-        console.log('Mật khẩu:', password);
+        setIsLoading(true); 
+
+        try {
+            const response = await login({ usernameOrEmail, password }); 
+            toast.success("Đăng nhập thành công!", { autoClose: 500 });
+
+            navigate("/"); 
+        } catch (error) {
+            console.error("Lỗi đăng nhập:", error);
+            toast.error(error.response?.data?.message || "Đăng nhập thất bại!", { autoClose: 3000 });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -22,7 +39,7 @@ const Login = () => {
                         <label className="mb-1 block text-sm font-medium text-gray-600">Tên tài khoản</label>
                         <input
                             type="text"
-                            value={username}
+                            value={usernameOrEmail}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full rounded-md border p-2 outline-none focus:border-blue-500"
                             required
@@ -42,15 +59,17 @@ const Login = () => {
                     </div>
 
                     {/* Nút đăng nhập */}
-                    <button type="submit" className="w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600">
-                        Đăng nhập
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full rounded-md bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300"
+                    >
+                        {isLoading ? "Đang xử lý..." : "Đăng nhập"}
                     </button>
 
                     {/* Quên mật khẩu */}
                     <div className="mt-2 text-right text-sm">
-                        <a href="#" className="text-blue-500 hover:underline">
-                            Quên mật khẩu?
-                        </a>
+                        <a href="#" className="text-blue-500 hover:underline">Quên mật khẩu?</a>
                     </div>
                 </form>
 
@@ -61,18 +80,10 @@ const Login = () => {
                     <div className="h-px flex-1 bg-gray-300"></div>
                 </div>
 
-                {/* Đăng nhập bằng Google */}
-                <button className="flex w-full items-center justify-center gap-2 rounded-md bg-gray-200 py-2 text-gray-700 hover:bg-gray-300">
-                    <FaGoogle className="text-red-500" />
-                    Đăng nhập bằng Google
-                </button>
-
                 {/* Đăng ký tài khoản */}
                 <div className="mt-4 text-center text-sm">
-                    Bạn chưa có tài khoản?{' '}
-                    <a href="/signup" className="text-blue-500 hover:underline">
-                        Đăng ký tài khoản
-                    </a>
+                    Bạn chưa có tài khoản?{" "}
+                    <a href="/api/auth/signup" className="text-blue-500 hover:underline">Đăng ký tài khoản</a>
                 </div>
             </div>
         </div>

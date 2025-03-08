@@ -4,8 +4,10 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import useAuthApi from '../../services/authServices.js';
 
-const API_BASE_URL = 'https://be-aiot-lab-landing-page.onrender.com';
+const API_BASE_URL = "http://localhost:8888";
+const {login, signUp, logout} = useAuthApi();
 
 ReactModal.setAppElement('#root');
 function Header() {
@@ -27,12 +29,12 @@ function Header() {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/auth/logout`);
-            Cookies.remove('jwt');
+            const response = await axios.post(`${API_BASE_URL}/api/auth/logout`);
+            await logout();
             console.log(response);
             toast.success('Đăng xuất thành công', { autoClose: 1000 });
             setTimeout(() => {
-                navigate('/login');
+                navigate('/api/auth/signin');
             }, 1000);
         } catch (error) {
             toast.error('Đăng xuất thất bại, hãy thử lại!');
@@ -41,7 +43,7 @@ function Header() {
     };
 
     const handleLogin = () => {
-        navigate('/login');
+        navigate('/api/auth/signin');
     };
 
     return (

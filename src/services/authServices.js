@@ -1,47 +1,54 @@
 import httpRequest from '../utils/httpRequest';
 
-export const useAuthApi = () => {
-    const login = async ({ email, password }) => {
+const API_BASE_URL = "http://localhost:8888";
+
+const useAuthApi = () => {
+    const login = async ({ usernameOrEmail, password }) => {
         try {
             const res = await httpRequest.post(
-                'auth/login',
-                {
-                    email,
-                    password,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                },
+                `${API_BASE_URL}/api/auth/signin`,
+                { usernameOrEmail, password }
             );
-            console.log(res.data);
+
+            if (res?.data?.token) {
+                localStorage.setItem("jwt", res.data.token); // Lưu token vào localStorage
+            }
+
             return res?.data;
         } catch (error) {
-            console.log(error);
+            console.error("Lỗi đăng nhập:", error);
             return error.response;
         }
     };
 
     const signUp = async (data) => {
         try {
-            const res = await httpRequest.post('auth/register', data, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            });
-            console.log(res.data);
+            const res = await httpRequest.post(
+                `${API_BASE_URL}/api/auth/signup`,
+                data
+            );
             return res?.data;
         } catch (error) {
-            console.log(error);
+            console.error("Lỗi đăng ký:", error);
             return error.response;
         }
     };
 
-    let authServices = {
-        login,
-        signUp,
+    const logout = async () => {
+        try {
+            const token = localStorage.getItem("jwt");
+
+            const res = await httpRequest.post(`${API_BASE_URL}/api/auth/logout`, {});
+
+            localStorage.removeItem("jwt"); // Xóa token sau khi logout
+            return res?.data;
+        } catch (error) {
+            console.error("Lỗi đăng xuất:", error);
+            return error.response;
+        }
     };
 
-    return authServices;
+    return { login, signUp, logout };
 };
+
+export default useAuthApi;
