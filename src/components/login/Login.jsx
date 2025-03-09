@@ -83,7 +83,7 @@ const Login = () => {
                 {/* Đăng ký tài khoản */}
                 <div className="mt-4 text-center text-sm">
                     Bạn chưa có tài khoản?{" "}
-                    <a href="/api/auth/signup" className="text-blue-500 hover:underline">Đăng ký tài khoản</a>
+                    <a href="/auth/signup" className="text-blue-500 hover:underline">Đăng ký tài khoản</a>
                 </div>
             </div>
         </div>

@@ -34,7 +34,7 @@ function Header() {
             console.log(response);
             toast.success('Đăng xuất thành công', { autoClose: 1000 });
             setTimeout(() => {
-                navigate('/api/auth/signin');
+                navigate('/auth/signin');
             }, 1000);
         } catch (error) {
             toast.error('Đăng xuất thất bại, hãy thử lại!');
@@ -43,7 +43,7 @@ function Header() {
     };
 
     const handleLogin = () => {
-        navigate('/api/auth/signin');
+        navigate('/auth/signin');
     };
 
     return (

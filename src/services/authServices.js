@@ -6,7 +6,7 @@ const useAuthApi = () => {
     const login = async ({ usernameOrEmail, password }) => {
         try {
             const res = await httpRequest.post(
-                `${API_BASE_URL}/api/auth/signin`,
+                `${API_BASE_URL}/auth/signin`,
                 { usernameOrEmail, password }
             );
 
@@ -24,7 +24,7 @@ const useAuthApi = () => {
     const signUp = async (data) => {
         try {
             const res = await httpRequest.post(
-                `${API_BASE_URL}/api/auth/signup`,
+                `${API_BASE_URL}/auth/signup`,
                 data
             );
             return res?.data;

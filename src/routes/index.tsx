@@ -10,7 +10,7 @@ const publicRoutes = [
         component: MainDivider,
         layout: HeaderOnly,
     },
-    { path: '/api/auth/signin', component: Login, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
-    { path: '/api/auth/signup', component: Signup, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
+    { path: '/auth/signin', component: Login, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
+    { path: '/auth/signup', component: Signup, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
 ];
 export { publicRoutes };
