@@ -29,7 +29,7 @@ function Header() {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/auth/logout`);
+            const response = await axios.post(`${API_BASE_URL}/auth/logout`);
             await logout();
             console.log(response);
             toast.success('Đăng xuất thành công', { autoClose: 1000 });

@@ -38,7 +38,7 @@ const useAuthApi = () => {
         try {
             const token = localStorage.getItem("jwt");
 
-            const res = await httpRequest.post(`${API_BASE_URL}/api/auth/logout`, {});
+            const res = await httpRequest.post(`${API_BASE_URL}/auth/logout`, {});
 
             localStorage.removeItem("jwt"); // Xóa token sau khi logout
             return res?.data;
