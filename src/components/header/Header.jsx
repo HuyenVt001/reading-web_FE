@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import useAuthApi from '../../services/authServices.js';
 
-const API_BASE_URL = "http://localhost:8888";
-const {login, signUp, logout} = useAuthApi();
-
 ReactModal.setAppElement('#root');
-function Header() {
+const Header = () => {
+    const { logout } = useAuthApi();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
     const navigate = useNavigate();
@@ -29,10 +26,8 @@ function Header() {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/auth/logout`);
-            await logout();
-            console.log(response);
-            toast.success('Đăng xuất thành công', { autoClose: 1000 });
+            const res = await logout();
+            toast.success(res.message, { autoClose: 1000 });
             setTimeout(() => {
                 navigate('/auth/signin');
             }, 1000);
@@ -145,6 +140,6 @@ function Header() {
             </div>
         </div>
     );
-}
+};
 
 export default Header;

@@ -1,8 +1,10 @@
 import HeaderOnly from '../layouts/HeaderOnly';
 import MainDivider from '../components/home/MainDivider';
 import Login from '../components/login/Login';
-import React from 'react';
 import Signup from '../components/signup/SignUp';
+import Dashboard from '../components/dashboard/page';
+import Profile from '../components/profile/page';
+import React from 'react';
 
 const publicRoutes = [
     {
@@ -10,7 +12,29 @@ const publicRoutes = [
         component: MainDivider,
         layout: HeaderOnly,
     },
-    { path: '/auth/signin', component: Login, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
-    { path: '/auth/signup', component: Signup, layout: ({ children }: { children: React.ReactNode }) => <>{children}</> },
+    {
+        path: '/login',
+        component: Login,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    },
+    {
+        path: '/signup',
+        component: Signup,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    },
 ];
-export { publicRoutes };
+
+const protectedRoutes = [
+    {
+        path: '/dashboard',
+        component: Dashboard,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    },
+    {
+        path: '/profile',
+        component: Profile,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    },
+];
+
+export { publicRoutes, protectedRoutes };
