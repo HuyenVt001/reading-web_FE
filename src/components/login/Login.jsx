@@ -18,9 +18,10 @@ const Login = () => {
 
         try {
             const response = await login({ usernameOrEmail, password });
-            if (response.status === 200) {
-                toast.success(response.message, { autoClose: 3000 });
+            console.log(response);
+            if (response.status == 200) {
                 navigate('/');
+                toast.success(response.message, { autoClose: 3000 });
             } else {
                 toast.error(response.message, { autoClose: 3000 });
             }
@@ -88,7 +89,7 @@ const Login = () => {
                 {/* Đăng ký tài khoản */}
                 <div className="mt-4 text-center text-sm">
                     Bạn chưa có tài khoản?{' '}
-                    <a href="/auth/signup" className="text-blue-500 hover:underline">
+                    <a href="/signup" className="text-blue-500 hover:underline">
                         Đăng ký tài khoản
                     </a>
                 </div>

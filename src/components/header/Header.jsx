@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import useAuthApi from '../../services/authServices.js';
 
 ReactModal.setAppElement('#root');
@@ -15,8 +16,11 @@ const Header = () => {
     const toggleOpen = () => setModalIsOpen((prev) => !prev);
     const closeModal = () => setModalIsOpen(false);
 
+    const token = Cookies.get('jwt');
+    const decode = jwtDecode(token);
+    const roleId = Number(decode.roleId); 
+
     useEffect(() => {
-        const token = Cookies.get('jwt');
         if (token) {
             setIsLoggedIn(true);
         } else {
@@ -27,9 +31,10 @@ const Header = () => {
     const handleLogOut = async () => {
         try {
             const res = await logout();
-            toast.success(res.message, { autoClose: 1000 });
+            setIsLoggedIn(false);
+            toast.success(res.data.message, { autoClose: 1000 });
             setTimeout(() => {
-                navigate('/auth/signin');
+                navigate('/');
             }, 1000);
         } catch (error) {
             toast.error('Đăng xuất thất bại, hãy thử lại!');
@@ -38,107 +43,39 @@ const Header = () => {
     };
 
     const handleLogin = () => {
-        navigate('/auth/signin');
+        navigate('/login');
     };
 
     return (
-        <div className="w-full h-[65px] fixed top-0 shadow-lg shadow-[#2A0E61]/50  md:backdrop-blur-md z-40 px-10 md:bg-transparent bg-slate-100">
-            <div className="w-full h-full flex flex-row items-center justify-between m-auto px-[10px]">
-                <a href="#Intro" className="h-full w-auto flex flex-row items-center">
-                    <img
-                        alt="logo"
-                        loading="lazy"
-                        width="150"
-                        height="150"
-                        decoding="async"
-                        data-nimg="1"
-                        style={{ color: `transparent` }}
-                        src={'/'}
-                        className="rounded-full"
-                    />
-                    <span className="font-bold ml-[10px] hidden md:block text-[#001355] text-xl">Job Finding Web</span>
-                </a>
-
-                <div
-                    className="hidden lg:flex w-fit h-full flex-row items-center justify-between md:mr-10 md:text-sm xl:text-base"
-                    style={{ maxWidth: '100%' }}
-                >
-                    <div className="flex items-center justify-between border border-[#7042f861] bg-[#0300145e] mr-[15px] px-[20px] py-[10px] rounded-full gap-10 z-50 font-medium text-gray-200">
-                        <a href="#Intro" className="cursor-pointer">
-                            Giới thiệu
-                        </a>
-
-                        <a href="#Member" className="cursor-pointer">
-                            Thành viên
-                        </a>
-
-                        <a href="#Activity" className="cursor-pointer">
-                            Hoạt động
-                        </a>
-
-                        <a href="#Contact" className="cursor-pointer">
-                            Liên hệ
-                        </a>
-                    </div>
-                </div>
-
-                {isLoggedIn ? (
-                    <button onClick={handleLogOut}>Đăng xuất</button>
-                ) : (
-                    <button onClick={handleLogin}>Đăng nhập</button>
-                )}
-
-                <div className="lg:hidden flex items-center">
-                    <button className="text-gray-300" onClick={toggleOpen}>
-                        <svg
-                            aria-hidden="true"
-                            focusable="false"
-                            data-prefix="fas"
-                            data-icon="bars"
-                            className="svg-inline--fa fa-bars "
-                            role="img"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 448 512"
-                            width={20}
-                            height={20}
-                            style={{ color: '#ffffff', fontSize: '20px' }}
-                        >
-                            <path
-                                fill="currentColor"
-                                d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"
-                            ></path>
-                        </svg>
-                    </button>
-
-                    <ReactModal
-                        isOpen={modalIsOpen}
-                        onRequestClose={closeModal}
-                        shouldCloseOnOverlayClick={true}
-                        className="bg-transparent"
-                        style={{ overlay: { backgroundColor: 'transparent', zIndex: 40 } }}
-                    >
-                        <div className="absolute top-[65px] right-0 bg-[#020213d2] border border-[#7042f861] w-[250px] p-4 rounded-lg shadow-lg z-50">
-                            <a href="#Intro" className="block py-2 cursor-pointer text-white">
-                                Giới thiệu
-                            </a>
-                            <a href="#Activity" className="block py-2 cursor-pointer text-white">
-                                Hoạt động
-                            </a>
-
-                            <a href="#Contact" className="block py-2 cursor-pointer text-white">
-                                Liên hệ
-                            </a>
-
-                            {isLoggedIn ? (
-                                <button onClick={handleLogOut}>Đăng xuất</button>
-                            ) : (
-                                <button onClick={handleLogin}>Đăng nhập</button>
-                            )}
-                        </div>
-                    </ReactModal>
-                </div>
+        <header className="w-full bg-white shadow-md border-b px-6 py-3 flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+                <a href="/"><span className="text-lg font-semibold">Logo</span></a>
             </div>
-        </div>
+            
+            {/* Navigation Links */}
+            <nav className="hidden md:flex space-x-6 text-gray-800 font-medium">
+                <a href="#" className="hover:text-blue-500">Thể loại</a>
+                <a href="/favorite-story" className="hover:text-blue-500">Theo dõi</a>
+                <a href="/post-story" className="hover:text-blue-500">Thêm sách</a>
+                {(roleId <= 2) && <a href="/managed-story" className="hover:text-blue-500">Quản lý</a>}
+                {(roleId === 0) && <a href="/add-genre" className="hover:text-blue-500">Thể loại</a>}
+            </nav>
+            
+            {/* Search Box */}
+            <div className="flex items-center space-x-3">
+                <input type="text" placeholder="Tìm kiếm" className="border px-3 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            
+            {/* User Actions */}
+            <div>
+                {isLoggedIn ? (
+                    <button onClick={handleLogOut} className="text-gray-600 hover:text-gray-900">Đăng xuất</button>
+                ) : (
+                    <button onClick={handleLogin} className="text-gray-600 hover:text-gray-900">Đăng nhập</button>
+                )}
+            </div>
+        </header>
     );
 };
 

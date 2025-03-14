@@ -1,17 +1,16 @@
+import { root } from 'postcss';
 import httpRequest from '../utils/httpRequest';
-
-const API_BASE_URL = 'http://localhost:8888';
 
 const useAuthApi = () => {
     const login = async ({ usernameOrEmail, password }) => {
         try {
-            const res = await httpRequest.post(`${API_BASE_URL}/auth/signin`, { usernameOrEmail, password });
+            const res = await httpRequest.post(`/auth/signin`, { usernameOrEmail, password });
 
             if (res?.data?.token) {
                 localStorage.setItem('jwt', res.data.token);
             }
 
-            return res?.data;
+            return { status: res.status, data: res.data };
         } catch (error) {
             console.error('Lỗi đăng nhập:', error);
             return error.response;
@@ -20,8 +19,8 @@ const useAuthApi = () => {
 
     const signUp = async (data) => {
         try {
-            const res = await httpRequest.post(`${API_BASE_URL}/auth/signup`, data);
-            return res?.data;
+            const res = await httpRequest.post(`/auth/signup`, data);
+            return { status: res.status, data: res.data };
         } catch (error) {
             console.error('Lỗi đăng ký:', error);
             return error.response;
@@ -30,9 +29,9 @@ const useAuthApi = () => {
 
     const logout = async () => {
         try {
-            const res = await httpRequest.post(`${API_BASE_URL}/auth/logout`, {});
+            const res = await httpRequest.post(`/auth/logout`, {});
             localStorage.removeItem('jwt');
-            return res?.data;
+            return { status: res.status, data: res.data };
         } catch (error) {
             console.error('Lỗi đăng xuất:', error);
             return error.response;

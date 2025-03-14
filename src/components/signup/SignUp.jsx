@@ -30,7 +30,7 @@ function Signup() {
         try {
             await signUp(formData);
             toast.success('Đăng ký thành công! 🎉', { autoClose: 500 });
-            navigate('/auth/signin');
+            navigate('/login');
         } catch (error) {
             console.error('Error signing up:', error);
             toast.error(error.response?.data?.message || 'Đăng ký thất bại! 😢', { autoClose: 3000 });
@@ -97,7 +97,7 @@ function Signup() {
                 </form>
                 <p className="text-sm text-center mt-4">
                     Đã có tài khoản?{' '}
-                    <a href="/auth/signin" className="text-blue-500">
+                    <a href="/login" className="text-blue-500">
                         Đăng nhập
                     </a>
                 </p>

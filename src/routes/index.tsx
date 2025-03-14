@@ -4,6 +4,8 @@ import Login from '../components/login/Login';
 import Signup from '../components/signup/SignUp';
 import Dashboard from '../components/dashboard/page';
 import Profile from '../components/profile/page';
+import PostStory from '../components/postStory/PostStory';
+import ManagedStories from '../components/managedStories/ManagedStories'
 import React from 'react';
 
 const publicRoutes = [
@@ -35,6 +37,16 @@ const protectedRoutes = [
         component: Profile,
         layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     },
+    {
+        path: '/post-story',
+        component: PostStory,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    },
+    {
+        path: '/managed-story',
+        component: ManagedStories,
+        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    }
 ];
 
 export { publicRoutes, protectedRoutes };
