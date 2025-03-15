@@ -38,7 +38,59 @@ const useAuthApi = () => {
         }
     };
 
-    return { login, signUp, logout };
+    const updateUsername = async (newUsername) => {
+        try {
+            const token = Cookies.get('jwt');
+            const res = httpRequest.post(`/auth/update/username`, { newUsername }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+            return { status: res.status, data: res.data };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateAvatar = async (avatar) => {
+        try {
+            const token = Cookies.get('jwt');
+            const res = httpRequest.post(`/auth/update/avatar`, { avatar }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+            return { status: res.status, data: res.data };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updatePassword = async (password, newPassword) => {
+        try {
+            const token = Cookies.get('jwt');
+            const res = httpRequest.post(`/auth/update/password`, { password, newPassword }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+            return { status: res.status, data: res.data };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return {
+        login,
+        signUp,
+        logout,
+        updateUsername,
+        updateAvatar,
+        updatePassword
+    };
 };
 
 export default useAuthApi;

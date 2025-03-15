@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 const storyApi = () => {
     const postStory = async ({ title, authorName, genre, description }) => {
         const token = Cookie.get('jwt');
-        console.log(token);
+        //console.log(token);
         try {
             const res = await httpRequest.post(`/story/post-story`, { title, authorName, genre, description }, {
                 headers: {
@@ -35,9 +35,11 @@ const storyApi = () => {
         }
     };
 
-    const getChapter = async () => {
+    const getStory = async (storyId, page) => {
         try {
             const token = Cookie.get('jwt');
+            const res = await httpRequest.get(`/story/${storyId}/${page}`, {});
+            return { status: res.status, data: res.data };
         } catch (error) {
             console.log(error);
         }
@@ -106,7 +108,7 @@ const storyApi = () => {
     return {
         postStory,
         getManagedStories,
-        getChapter,
+        getStory,
         updateStory,
         deleteStory,
         addManager,
