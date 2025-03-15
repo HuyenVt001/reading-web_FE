@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { publicRoutes, protectedRoutes } from './routes'; // Separate routes
 import React from 'react';
-import RequireAuth from './components/checkAuth/RequireAuth';
+import RequireAuth from './components/RequireAuth';
 
 function App() {
     return (

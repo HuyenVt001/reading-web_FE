@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
-import useAuthApi from '../../services/authServices.js';
+import useAuthApi from '../services/authServices.js';
 
 ReactModal.setAppElement('#root');
 const Header = () => {

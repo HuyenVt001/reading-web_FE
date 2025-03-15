@@ -5,9 +5,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import useAuthApi from '../../services/authServices';
+import useAuthApi from '../services/authServices';
 
-const API_BASE_URL = "http://localhost:8888";
+const API_BASE_URL = "http://localhost:8000";
 
 function Signup() {
     const navigate = useNavigate();

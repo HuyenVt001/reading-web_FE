@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import storyApi from "../../services/storyServices";
+import storyApi from "../services/storyServices";
 import { handler } from "@tailwindcss/line-clamp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

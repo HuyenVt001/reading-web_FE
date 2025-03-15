@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React from "react";
-import storyApi from '../../services/storyServices.js'
-import Header from '../header/Header.jsx';
+import storyApi from '../services/storyServices.js'
+import Header from './Header.jsx';
 
 const PostStory = () => {
     const navigate = useNavigate();

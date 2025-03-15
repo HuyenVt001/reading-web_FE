@@ -1,11 +1,9 @@
 import HeaderOnly from '../layouts/HeaderOnly';
-import MainDivider from '../components/home/MainDivider';
-import Login from '../components/login/Login';
-import Signup from '../components/signup/SignUp';
-import Dashboard from '../components/dashboard/page';
-import Profile from '../components/profile/page';
-import PostStory from '../components/postStory/PostStory';
-import ManagedStories from '../components/managedStories/ManagedStories'
+import MainDivider from '../components/MainDivider';
+import Login from '../components/Login';
+import Signup from '../components/SignUp';
+import PostStory from '../components/PostStory';
+import ManagedStories from '../components/ManagedStories'
 import React from 'react';
 
 const publicRoutes = [
@@ -27,16 +25,6 @@ const publicRoutes = [
 ];
 
 const protectedRoutes = [
-    {
-        path: '/dashboard',
-        component: Dashboard,
-        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    },
-    {
-        path: '/profile',
-        component: Profile,
-        layout: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    },
     {
         path: '/post-story',
         component: PostStory,
