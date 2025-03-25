@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React from "react";
 import storyApi from '../services/storyServices.js'
 import Header from './Header.jsx';
+import httpRequest from '../utils/httpRequest.js';
 
 const PostStory = () => {
     const navigate = useNavigate();
@@ -12,9 +13,24 @@ const PostStory = () => {
 
     const [title, setTitle] = useState("");
     const [authorName, setAuthorName] = useState("");
+    const [genres, setGenres] = useState([]); 
     const [genre, setGenre] = useState("");
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState("");  
+    
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                const response = await httpRequest.get("/genre/");
+                //console.log(response.data);
+                setGenres(response.data.listGenres); 
+            } catch (error) {
+                console.error("Lỗi khi lấy danh sách thể loại:", error);
+            }
+        };
+
+        fetchGenres();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -66,11 +82,18 @@ const PostStory = () => {
                                 </div>
                                 <div className="mb-4">
                                     <label className="font-semibold block">Thể loại</label>
-                                    <input 
-                                        type="text" 
+                                    <select
                                         value={genre}
                                         onChange={(e) => setGenre(e.target.value)}
-                                        className="w-full p-2 border border-gray-300 rounded-md"/>
+                                        className="w-full p-2 border border-gray-300 rounded-md"
+                                    >
+                                        <option value="">Chọn thể loại</option>
+                                        {genres.map((g) => (
+                                            <option key={g.id} value={g.name}>
+                                                {g.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="mb-4">
                                     <label className="font-semibold block">Ảnh bìa</label>

@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
 import useAuthApi from '../services/authServices.js';
+import Cookie from 'js-cookie';
 
 ReactModal.setAppElement('#root');
 const Header = () => {
-    const { logout } = useAuthApi();
+    const { logout, getRole } = useAuthApi();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
     const navigate = useNavigate();
@@ -16,9 +15,8 @@ const Header = () => {
     const toggleOpen = () => setModalIsOpen((prev) => !prev);
     const closeModal = () => setModalIsOpen(false);
 
-    const token = Cookies.get('jwt');
-    const decode = jwtDecode(token);
-    const roleId = Number(decode.roleId); 
+    const token = Cookie.get('jwt');
+    const roleId = getRole();
 
     useEffect(() => {
         if (token) {

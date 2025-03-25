@@ -1,5 +1,7 @@
 import { root } from 'postcss';
 import httpRequest from '../utils/httpRequest';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 const useAuthApi = () => {
     const login = async ({ usernameOrEmail, password }) => {
@@ -83,13 +85,25 @@ const useAuthApi = () => {
         }
     };
 
+    const getRole = () => {
+        try {
+            const token = Cookies.get('jwt');
+            const decode = jwtDecode(token);
+            const roleId = Number(decode.roleId);
+            return roleId;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return {
         login,
         signUp,
         logout,
         updateUsername,
         updateAvatar,
-        updatePassword
+        updatePassword,
+        getRole
     };
 };
 

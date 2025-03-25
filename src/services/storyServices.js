@@ -1,3 +1,4 @@
+import { data } from 'autoprefixer';
 import httpRequest from '../utils/httpRequest';
 import Cookie from 'js-cookie';
 
@@ -45,10 +46,19 @@ const storyApi = () => {
         }
     };
 
+    const getChaptersByStory = async (storyId) => {
+        try {
+            const res = await httpRequest.get(`/story/chapter/${storyId}`, { storyId });
+            return { status: res.status, data: res.data };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const updateStory = async (storyId, { title, authorName, description, statusId, latestChapterId, avatar, genre }) => {
         try {
             const token = Cookie.get('jwt');
-            const res = await httpRequest.post(`/story/update-story/${storyId}`, { title, authorName, description, statusId, latestChapterId, avatar, genre }, {
+            const res = await httpRequest.post(`/story/update/${storyId}`, { title, authorName, description, statusId, latestChapterId, avatar, genre }, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -63,7 +73,7 @@ const storyApi = () => {
     const deleteStory = async (storyId) => {
         try {
             const token = Cookie.get('jwt');
-            const res = await httpRequest.post(`/story/delete-story/${storyId}`, {}, {
+            const res = await httpRequest.post(`/story/delete/${storyId}`, {}, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -109,6 +119,7 @@ const storyApi = () => {
         postStory,
         getManagedStories,
         getStory,
+        getChaptersByStory,
         updateStory,
         deleteStory,
         addManager,
